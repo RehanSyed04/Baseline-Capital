@@ -21,6 +21,41 @@ function initMobileMenu() {
   });
 }
 
+// ── NAVBAR SCROLL SHADOW ──
+function initNavbarScroll() {
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+  const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 10);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+// ── SCROLL REVEAL ──
+function initScrollReveal() {
+  const targets = document.querySelectorAll(
+    '.service-card, .step, .case-study, .stat, .about-text, .contact-info'
+  );
+  if (!targets.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+  targets.forEach((el, i) => {
+    el.classList.add('reveal');
+    // Stagger siblings inside the same grid/row
+    const stagger = el.parentElement.querySelectorAll(':scope > .reveal');
+    const idx = Array.from(stagger).indexOf(el);
+    if (idx > 0) el.style.transitionDelay = `${idx * 80}ms`;
+    observer.observe(el);
+  });
+}
+
 // ── MEETING REQUEST FORM ──
 function initForm() {
   const form = document.getElementById('meeting-form');
@@ -64,5 +99,7 @@ function initForm() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
+  initNavbarScroll();
+  initScrollReveal();
   initForm();
 });
