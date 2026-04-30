@@ -204,6 +204,7 @@ section { padding: 80px 0; }
 }
 .case-study-img {
   position: relative;
+  min-width: 0;
 }
 .case-study-img img { width: 100%; height: auto; display: block; }
 .case-study-img-placeholder {
